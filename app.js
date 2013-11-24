@@ -11,27 +11,29 @@ angular.module('app', [])
     .directive('stars', function () {
         return {
             restrict: 'A',
+            template: '<span><img src="star.png" ng-repeat="star in stars()"/>' +
+                '<img src="empty-star.png" ng-repeat="star in emptyStars()"/></span>',
+            scope: {
+                val: '=stars',
+                max: '=maxStars'
+            },
             link: function (scope, element, attrs) {
-                var val, max;
-                function draw() {
-                    var html = '';
-                    var stars = val <= max ? val : max;
-                    for (var i = 0 ; i < stars ; i++) {
-                        html += '<img src="star.png"/>';
-                    }
-                    for (; i < max ; i++) {
-                        html += '<img src="empty-star.png"/>';
-                    }
-                    element.html(html);
+                function stars() {
+                    return scope.val <= scope.max ? scope.val : scope.max;
                 }
-                scope.$watch(attrs.stars, function (value) {
-                    val = value;
-                    draw();
-                });
-                scope.$watch(attrs.maxStars, function (value) {
-                    max = value;
-                    draw();
-                });
+                function fillArray(n) {
+                    var a = [];
+                    for (var i = 0 ; i < n ; i++) {
+                        a.push(i);
+                    }
+                    return a;
+                }
+                scope.stars = function () {
+                    return fillArray(stars());
+                };
+                scope.emptyStars = function () {
+                    return fillArray(scope.max - stars());
+                };
             }
         }
     })
