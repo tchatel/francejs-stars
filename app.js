@@ -11,8 +11,8 @@ angular.module('app', [])
     .directive('stars', function () {
         return {
             restrict: 'A',
-            template: '<span><img src="star.png" ng-repeat="star in stars()"/>' +
-                '<img src="empty-star.png" ng-repeat="star in emptyStars()"/></span>',
+            template: '<span><img src="star.png" ng-repeat="star in stars()" ng-click="setValue(1 + star)"/>' +
+                '<img src="empty-star.png" ng-repeat="star in emptyStars()" ng-click="setValue(stars().length + 1 + star)"/></span>',
             scope: {
                 val: '=stars',
                 max: '=maxStars'
@@ -34,6 +34,9 @@ angular.module('app', [])
                 scope.emptyStars = function () {
                     return fillArray(scope.max - stars());
                 };
+                scope.setValue = function (n) {
+                    scope.val = n;
+                }
             }
         }
     })
