@@ -12,12 +12,25 @@ angular.module('app', [])
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
-                scope.$watch(attrs.stars, function (value) {
+                var val, max;
+                function draw() {
                     var html = '';
-                    for (var i = 0 ; i < value ; i++) {
+                    var stars = val <= max ? val : max;
+                    for (var i = 0 ; i < stars ; i++) {
                         html += '<img src="star.png"/>';
                     }
+                    for (; i < max ; i++) {
+                        html += '<img src="empty-star.png"/>';
+                    }
                     element.html(html);
+                }
+                scope.$watch(attrs.stars, function (value) {
+                    val = value;
+                    draw();
+                });
+                scope.$watch(attrs.maxStars, function (value) {
+                    max = value;
+                    draw();
                 });
             }
         }
