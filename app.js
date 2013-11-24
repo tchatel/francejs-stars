@@ -12,6 +12,13 @@ angular.module('app', [])
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
+                scope.$watch(attrs.stars, function (value) {
+                    var html = '';
+                    for (var i = 0 ; i < value ; i++) {
+                        html += '<img src="star.png"/>';
+                    }
+                    element.html(html);
+                });
             }
         }
     })
